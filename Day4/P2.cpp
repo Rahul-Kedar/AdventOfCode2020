@@ -76,7 +76,7 @@ int main(){
     int validPassports = 0;
     while (!input.eof()) {   
         unordered_map<string, string> fields;     
-        for (int i = 0; getline(input, line); i++) {
+        while (getline(input, line)) {
             if(line.length() <= 1) break;  //MinGW g++ & cl.exe returns 0, but WSL g++ returns 1.
             parseLine(line, fields);
         } 
