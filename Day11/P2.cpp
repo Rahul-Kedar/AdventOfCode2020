@@ -5,100 +5,41 @@
 
 using namespace std;
 
+struct Direction {
+        int x;
+        int y;
+    };
 
-int AdjSeatsOccu(vector<vector<char> >& seats, int si, int sj){
+vector<Direction> directions {
+    {-1, -1},
+    {-1, 0},
+    {-1, 1},
+    {1, -1},
+    {1, 0},
+    {1, 1},
+    {0, 1},
+    {0, -1}
+};
+
+char findSeat(vector<vector<char> >& seats, int row, int col, Direction direction){
+    char result = '.';
+    int i = row + direction.x;
+    int j = col + direction.y;
+    int rowSize = seats.size();
+    int colSize = seats[0].size();
+    while(i >= 0 && j >= 0 && i < rowSize && j < colSize && result == '.'){
+        result = seats[i][j];
+        i += direction.x;
+        j += direction.y;
+    }
+    return result;
+}
+
+int AdjSeatsOccu(vector<vector<char> >& seats, int i, int j){
     int count = 0;
-    int i = si;
-    int j = sj;
-    int rowSize = seats.size() - 1;
-    int colSize = seats[0].size() - 1;
-
-    while(i > 0){
-        i--;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#') {
-            count++;
-            break;
-        }
+    for(auto& direction: directions){
+        if(findSeat(seats, i, j, direction) == '#') count++;
     }
-
-    i = si;
-    while (i < rowSize){
-        i++;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#') {
-            count++;
-            break;
-        }
-    }
-
-    i = si;
-    while (j > 0){
-        j--;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#') {
-            count++;
-            break;
-        }
-    }
-
-    j = sj;
-    while (j < colSize) {
-        j++;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#'){
-            count++;
-            break;
-        }
-    }
-
-    j = sj;
-    while(i > 0 && j > 0) {
-        i--;
-        j--;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#'){
-            count++;
-            break;
-        }
-    }
-
-    i = si;
-    j = sj;
-    while(i < rowSize && j > 0) {
-        i++;
-        j--;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#'){
-            count++;
-            break;
-        }
-    }
-
-    i = si;
-    j = sj;
-    while(i > 0 && j < colSize) {
-        i--;
-        j++;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#'){
-            count++;
-            break;
-        }
-    }
-
-    i = si;
-    j = sj;
-    while(i < rowSize && j < colSize) {
-        i++;
-        j++;
-        if(seats[i][j] == 'L') break;
-        if(seats[i][j] == '#'){
-            count++;
-            break;
-        }
-    }
-
     return count;
 }
 
@@ -136,7 +77,7 @@ int OccupiedSeats(vector<vector<char> >& seats){
         }
         newSeats.push_back(temp);
     }
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 90; i++){
         fillSeats(seats, newSeats);
         copyVec(newSeats, seats);
     }
